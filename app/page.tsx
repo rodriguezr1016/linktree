@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type UIEvent } from "react";
 
 const links = [
   {
@@ -60,9 +60,18 @@ const categories = [
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [categoryScrollProgress, setCategoryScrollProgress] = useState(0);
   const visibleLinks = selectedCategory
     ? links.filter((link) => link.categories.includes(selectedCategory))
     : links;
+  const handleCategoryScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollLeft, scrollWidth, clientWidth } = event.currentTarget;
+    const maxScrollLeft = scrollWidth - clientWidth;
+
+    setCategoryScrollProgress(
+      maxScrollLeft > 0 ? scrollLeft / maxScrollLeft : 0,
+    );
+  };
 
   return (
     <main className="min-h-screen bg-[#E8E2D9] px-6 py-12 text-[#4A443F]">
@@ -96,7 +105,10 @@ export default function Home() {
         </div>
 
         <div className="w-full overflow-hidden px-6 pt-6">
-          <div className="scrollbar-hide -mb-4 flex gap-2 overflow-x-auto pb-4">
+          <div
+            className="scrollbar-hide -mb-4 flex gap-2 overflow-x-auto pb-4"
+            onScroll={handleCategoryScroll}
+          >
             {categories.map((category) => (
               <button
                 key={category.label}
@@ -116,6 +128,16 @@ export default function Home() {
                 {category.label}
               </button>
             ))}
+          </div>
+          <div className="mt-3 h-1 w-full rounded-full bg-[#E8E2D9]">
+            <div
+              className="h-full rounded-full bg-[#A64E3F] transition-[left]"
+              style={{
+                left: `${categoryScrollProgress * 40}%`,
+                position: "relative",
+                width: "60%",
+              }}
+            />
           </div>
         </div>
 
