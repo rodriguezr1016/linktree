@@ -1,14 +1,53 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 const links = [
-  { label: "Portfolio", href: "https://nextjs-portfolio-eta-opal.vercel.app/" },
-  { label: "GitHub", href: "https://github.com/rodriguezr1016" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/rene-rodriguez-570648329/" },
-  { label: "Resume", href: "https://nextjs-portfolio-eta-opal.vercel.app/Resume" },
-  { label: "Instagram", href: "https://www.instagram.com/reneerooster1016/" },
-  { label: "YouTube", href: "https://www.youtube.com/@renerodriguez315" },
-  { label: "Projects", href: "https://nextjs-portfolio-eta-opal.vercel.app/Works" },
-  { label: "Spotify", href: "https://open.spotify.com/user/8ej2m6d78swathn9fi6pcwzf2" },
+  {
+    label: "Portfolio",
+    href: "https://nextjs-portfolio-eta-opal.vercel.app/",
+    categories: ["Work", "Dev"],
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/rodriguezr1016",
+    categories: ["Dev", "Work"],
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/rene-rodriguez-570648329/",
+    categories: ["Socials", "Work"],
+  },
+  {
+    label: "Resume",
+    href: "https://nextjs-portfolio-eta-opal.vercel.app/Resume",
+    categories: ["Work", "Dev"],
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/reneerooster1016/",
+    categories: ["Socials", "Media"],
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@renerodriguez315",
+    categories: ["Media", "Socials"],
+  },
+  {
+    label: "Projects",
+    href: "https://nextjs-portfolio-eta-opal.vercel.app/Works",
+    categories: ["Dev", "Work"],
+  },
+  {
+    label: "Spotify",
+    href: "https://open.spotify.com/user/8ej2m6d78swathn9fi6pcwzf2",
+    categories: ["Media", "Socials"],
+  },
+  { label: "Etsy", href: "https://www.etsy.com", categories: ["Shop"] },
+  { label: "Nike", href: "https://www.nike.com", categories: ["Shop"] },
+  { label: "Target", href: "https://www.target.com", categories: ["Shop"] },
+  { label: "Uniqlo", href: "https://www.uniqlo.com/us", categories: ["Shop"] },
 ];
 
 const categories = [
@@ -20,6 +59,11 @@ const categories = [
 ];
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const visibleLinks = selectedCategory
+    ? links.filter((link) => link.categories.includes(selectedCategory))
+    : links;
+
   return (
     <main className="min-h-screen bg-[#E8E2D9] px-6 py-12 text-[#4A443F]">
       <section className="mx-auto flex w-full max-w-md flex-col items-center overflow-hidden rounded-t-4xl border-2 border-[#D8CFC4] bg-[#FDFBF7]">
@@ -57,7 +101,16 @@ export default function Home() {
               <button
                 key={category.label}
                 type="button"
-                className="flex min-w-[calc((100%-1rem)/3)] items-center justify-center gap-2 rounded-md border border-[#CDBFB4] bg-[#F5EFE8] px-4 py-2 text-sm font-medium text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+                onClick={() =>
+                  setSelectedCategory((currentCategory) =>
+                    currentCategory === category.label ? "" : category.label,
+                  )
+                }
+                className={`flex min-w-[calc((100%-1rem)/3)] items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition ${
+                  selectedCategory === category.label
+                    ? "border-[#A64E3F] bg-[#A64E3F] text-[#FDFBF7]"
+                    : "border-[#CDBFB4] bg-[#F5EFE8] text-[#4A443F] hover:border-[#A64E3F] hover:text-[#A64E3F]"
+                }`}
               >
                 <span className="text-xs font-semibold">{category.icon}</span>
                 {category.label}
@@ -67,7 +120,7 @@ export default function Home() {
         </div>
 
         <div className="flex w-full flex-col gap-3 px-6 py-8">
-          {links.map((link) => (
+          {visibleLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
