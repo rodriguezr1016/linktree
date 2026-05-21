@@ -53,3 +53,9 @@ body {
 .animate-link-vibrate {
   animation: link-vibrate 120ms linear infinite;
 }
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

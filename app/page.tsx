@@ -16,8 +16,8 @@ const links = [
     href: "https://github.com/rodriguezr1016",
     categories: ["Dev", "Work"],
     icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
-  <g clip-path="url(#clip0_8317_1195)">
-    <path d="M5.99967 12.6667C2.66634 13.6667 2.66634 11 1.33301 10.6667M10.6663 14.6667V12.0867C10.6913 11.7688 10.6484 11.4492 10.5404 11.1492C10.4323 10.8492 10.2616 10.5756 10.0397 10.3467C12.133 10.1133 14.333 9.32 14.333 5.68C14.3328 4.74922 13.9748 3.85413 13.333 3.18C13.6369 2.36567 13.6154 1.46557 13.273 0.666666C13.273 0.666666 12.4863 0.433332 10.6663 1.65333C9.13835 1.23921 7.52767 1.23921 5.99967 1.65333C4.17967 0.433332 3.39301 0.666666 3.39301 0.666666C3.05059 1.46557 3.0291 2.36567 3.33301 3.18C2.68643 3.85913 2.32802 4.76231 2.33301 5.7C2.33301 9.31333 4.53301 10.1067 6.62634 10.3667C6.40701 10.5933 6.23785 10.8636 6.12988 11.1599C6.02191 11.4563 5.97755 11.772 5.99967 12.0867V14.6667" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g clipPath="url(#clip0_8317_1195)">
+    <path d="M5.99967 12.6667C2.66634 13.6667 2.66634 11 1.33301 10.6667M10.6663 14.6667V12.0867C10.6913 11.7688 10.6484 11.4492 10.5404 11.1492C10.4323 10.8492 10.2616 10.5756 10.0397 10.3467C12.133 10.1133 14.333 9.32 14.333 5.68C14.3328 4.74922 13.9748 3.85413 13.333 3.18C13.6369 2.36567 13.6154 1.46557 13.273 0.666666C13.273 0.666666 12.4863 0.433332 10.6663 1.65333C9.13835 1.23921 7.52767 1.23921 5.99967 1.65333C4.17967 0.433332 3.39301 0.666666 3.39301 0.666666C3.05059 1.46557 3.0291 2.36567 3.33301 3.18C2.68643 3.85913 2.32802 4.76231 2.33301 5.7C2.33301 9.31333 4.53301 10.1067 6.62634 10.3667C6.40701 10.5933 6.23785 10.8636 6.12988 11.1599C6.02191 11.4563 5.97755 11.772 5.99967 12.0867V14.6667" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </g>
   <defs>
     <clipPath id="clip0_8317_1195">
@@ -31,9 +31,9 @@ const links = [
     href: "https://www.linkedin.com/in/rene-rodriguez-570648329/",
     categories: ["Socials", "Work"],
     icon: <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 40 40" fill="none">
-  <path d="M26.6663 13.3334C29.3185 13.3334 31.862 14.3869 33.7374 16.2623C35.6128 18.1377 36.6663 20.6812 36.6663 23.3334V35H29.9997V23.3334C29.9997 22.4493 29.6485 21.6015 29.0234 20.9764C28.3982 20.3512 27.5504 20 26.6663 20C25.7823 20 24.9344 20.3512 24.3093 20.9764C23.6842 21.6015 23.333 22.4493 23.333 23.3334V35H16.6663V23.3334C16.6663 20.6812 17.7199 18.1377 19.5953 16.2623C21.4706 14.3869 24.0142 13.3334 26.6663 13.3334Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M9.99967 15H3.33301V35H9.99967V15Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M6.66634 10C8.50729 10 9.99967 8.50766 9.99967 6.66671C9.99967 4.82576 8.50729 3.33337 6.66634 3.33337C4.82539 3.33337 3.33301 4.82576 3.33301 6.66671C3.33301 8.50766 4.82539 10 6.66634 10Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26.6663 13.3334C29.3185 13.3334 31.862 14.3869 33.7374 16.2623C35.6128 18.1377 36.6663 20.6812 36.6663 23.3334V35H29.9997V23.3334C29.9997 22.4493 29.6485 21.6015 29.0234 20.9764C28.3982 20.3512 27.5504 20 26.6663 20C25.7823 20 24.9344 20.3512 24.3093 20.9764C23.6842 21.6015 23.333 22.4493 23.333 23.3334V35H16.6663V23.3334C16.6663 20.6812 17.7199 18.1377 19.5953 16.2623C21.4706 14.3869 24.0142 13.3334 26.6663 13.3334Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  <path d="M9.99967 15H3.33301V35H9.99967V15Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  <path d="M6.66634 10C8.50729 10 9.99967 8.50766 9.99967 6.66671C9.99967 4.82576 8.50729 3.33337 6.66634 3.33337C4.82539 3.33337 3.33301 4.82576 3.33301 6.66671C3.33301 8.50766 4.82539 10 6.66634 10Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>,
   },
   {
@@ -48,7 +48,7 @@ const links = [
     href: "https://www.instagram.com/reneerooster1016/",
     categories: ["Socials", "Media"],
     icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 23" fill="none">
-  <path d="M17.5 6.22913H17.51M7 1.91663H17C19.7614 1.91663 22 4.06193 22 6.70829V16.2916C22 18.938 19.7614 21.0833 17 21.0833H7C4.23858 21.0833 2 18.938 2 16.2916V6.70829C2 4.06193 4.23858 1.91663 7 1.91663ZM16 10.8962C16.1234 11.6938 15.9813 12.5083 15.5938 13.224C15.2063 13.9397 14.5931 14.5201 13.8416 14.8826C13.0901 15.2451 12.2384 15.3712 11.4078 15.2431C10.5771 15.115 9.80976 14.7392 9.21484 14.1691C8.61992 13.5989 8.22773 12.8635 8.09407 12.0675C7.9604 11.2714 8.09207 10.4553 8.47033 9.73507C8.84859 9.01486 9.45419 8.42729 10.201 8.05594C10.9478 7.68459 11.7978 7.54836 12.63 7.66663C13.4789 7.78727 14.2649 8.16636 14.8717 8.74792C15.4785 9.32948 15.8741 10.0827 16 10.8962Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17.5 6.22913H17.51M7 1.91663H17C19.7614 1.91663 22 4.06193 22 6.70829V16.2916C22 18.938 19.7614 21.0833 17 21.0833H7C4.23858 21.0833 2 18.938 2 16.2916V6.70829C2 4.06193 4.23858 1.91663 7 1.91663ZM16 10.8962C16.1234 11.6938 15.9813 12.5083 15.5938 13.224C15.2063 13.9397 14.5931 14.5201 13.8416 14.8826C13.0901 15.2451 12.2384 15.3712 11.4078 15.2431C10.5771 15.115 9.80976 14.7392 9.21484 14.1691C8.61992 13.5989 8.22773 12.8635 8.09407 12.0675C7.9604 11.2714 8.09207 10.4553 8.47033 9.73507C8.84859 9.01486 9.45419 8.42729 10.201 8.05594C10.9478 7.68459 11.7978 7.54836 12.63 7.66663C13.4789 7.78727 14.2649 8.16636 14.8717 8.74792C15.4785 9.32948 15.8741 10.0827 16 10.8962Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>,
   },
   {
@@ -56,8 +56,8 @@ const links = [
     href: "https://www.youtube.com/@renerodriguez315",
     categories: ["Media", "Socials"],
     icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 32 24" fill="none">
-  <path d="M30.0538 4.72667C29.8954 4.09388 29.5728 3.5141 29.1186 3.04587C28.6645 2.57765 28.0948 2.23758 27.4671 2.06C25.1738 1.5 16.0004 1.5 16.0004 1.5C16.0004 1.5 6.8271 1.5 4.53377 2.11333C3.9061 2.29091 3.33641 2.63099 2.88223 3.09921C2.42806 3.56743 2.10549 4.14721 1.9471 4.78C1.52739 7.10741 1.32208 9.46841 1.33377 11.8333C1.31881 14.2161 1.52413 16.5951 1.9471 18.94C2.12172 19.5531 2.45151 20.1109 2.90463 20.5593C3.35775 21.0078 3.91886 21.3318 4.53377 21.5C6.8271 22.1133 16.0004 22.1133 16.0004 22.1133C16.0004 22.1133 25.1738 22.1133 27.4671 21.5C28.0948 21.3224 28.6645 20.9823 29.1186 20.5141C29.5728 20.0459 29.8954 19.4661 30.0538 18.8333C30.4702 16.5235 30.6755 14.1804 30.6671 11.8333C30.6821 9.45061 30.4767 7.0716 30.0538 4.72667Z" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M13.0004 16.1933L20.6671 11.8333L13.0004 7.47333V16.1933Z" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M30.0538 4.72667C29.8954 4.09388 29.5728 3.5141 29.1186 3.04587C28.6645 2.57765 28.0948 2.23758 27.4671 2.06C25.1738 1.5 16.0004 1.5 16.0004 1.5C16.0004 1.5 6.8271 1.5 4.53377 2.11333C3.9061 2.29091 3.33641 2.63099 2.88223 3.09921C2.42806 3.56743 2.10549 4.14721 1.9471 4.78C1.52739 7.10741 1.32208 9.46841 1.33377 11.8333C1.31881 14.2161 1.52413 16.5951 1.9471 18.94C2.12172 19.5531 2.45151 20.1109 2.90463 20.5593C3.35775 21.0078 3.91886 21.3318 4.53377 21.5C6.8271 22.1133 16.0004 22.1133 16.0004 22.1133C16.0004 22.1133 25.1738 22.1133 27.4671 21.5C28.0948 21.3224 28.6645 20.9823 29.1186 20.5141C29.5728 20.0459 29.8954 19.4661 30.0538 18.8333C30.4702 16.5235 30.6755 14.1804 30.6671 11.8333C30.6821 9.45061 30.4767 7.0716 30.0538 4.72667Z" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+  <path d="M13.0004 16.1933L20.6671 11.8333L13.0004 7.47333V16.1933Z" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>,
   },
   {
@@ -453,7 +453,7 @@ export default function Home() {
                     currentLink === link.label ? null : link.label,
                   );
                 }}
-                className={`flex w-full touch-none items-center bg-[#A64E3F] px-4 py-4 text-sm font-semibold text-[#FDFBF7] transition hover:bg-[#8F4437] ${
+                className={`no-select flex w-full touch-none items-center bg-[#A64E3F] px-4 py-4 text-sm font-semibold text-[#FDFBF7] transition hover:bg-[#8F4437] ${
                   isReordering ? "cursor-grabbing" : "cursor-grab"
                 }`}
               >
@@ -537,32 +537,62 @@ export default function Home() {
                       title={
                         copiedLink === link.label ? "Copied" : "Copy link"
                       }
-                      className="flex items-center justify-center rounded-md border border-[#CDBFB4] bg-[#FDFBF7] text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+                      className={`flex items-center justify-center rounded-md border text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F] ${
+                        copiedLink === link.label
+                          ? "border-[#A64E3F] bg-[#E8E2D9]"
+                          : "border-[#CDBFB4] bg-[#FDFBF7]"
+                      }`}
                     >
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="18"
-                        height="18"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M8 8V6.5A2.5 2.5 0 0 1 10.5 4h7A2.5 2.5 0 0 1 20 6.5v7A2.5 2.5 0 0 1 17.5 16H16"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M6.5 8h7A2.5 2.5 0 0 1 16 10.5v7a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 4 17.5v-7A2.5 2.5 0 0 1 6.5 8Z"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      {copiedLink === link.label ? (
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="m5 12 4 4L19 6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M8 8V6.5A2.5 2.5 0 0 1 10.5 4h7A2.5 2.5 0 0 1 20 6.5v7A2.5 2.5 0 0 1 17.5 16H16"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M6.5 8h7A2.5 2.5 0 0 1 16 10.5v7a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 4 17.5v-7A2.5 2.5 0 0 1 6.5 8Z"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
                     </button>
                   </div>
+                  <p
+                    className={`text-center text-xs font-semibold text-[#A64E3F] transition ${
+                      copiedLink === link.label ? "opacity-100" : "opacity-0"
+                    }`}
+                    aria-live="polite"
+                  >
+                    Copied link
+                  </p>
                 </div>
                 </div>
               </div>
