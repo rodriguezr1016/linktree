@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useSyncExternalStore, type UIEvent } from "react";
+import {
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type PointerEvent,
+  type UIEvent,
+} from "react";
 
 const links = [
   {
@@ -347,6 +353,23 @@ export default function Home() {
 
     saveLinkOrder(nextLinks);
   };
+  const handleReorderPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!isReordering) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const targetCard = document
+      .elementFromPoint(event.clientX, event.clientY)
+      ?.closest("[data-link-label]");
+    const targetLabel =
+      targetCard instanceof HTMLElement ? targetCard.dataset.linkLabel : null;
+
+    if (targetLabel) {
+      moveDraggedLink(targetLabel);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[#E8E2D9] px-6 py-12 text-[#4A443F]">
@@ -418,6 +441,7 @@ export default function Home() {
 
         <div
           className="flex w-full flex-col gap-3 px-6 py-8"
+          onPointerMove={handleReorderPointerMove}
           onPointerUp={stopReordering}
           onPointerCancel={stopReordering}
         >
@@ -428,11 +452,7 @@ export default function Home() {
             return (
             <div
               key={link.label}
-              onPointerEnter={() => {
-                if (isReordering) {
-                  moveDraggedLink(link.label);
-                }
-              }}
+              data-link-label={link.label}
               className={`overflow-hidden rounded-md border border-[#CDBFB4] bg-[#F5EFE8] transition ${
                 isReordering ? "animate-link-vibrate" : ""
               } ${isDragging ? "scale-[1.02] opacity-80" : ""}`}
