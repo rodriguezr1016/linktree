@@ -171,6 +171,9 @@ export default function Home() {
   const [categoryScrollProgress, setCategoryScrollProgress] = useState(0);
   const [expandedLink, setExpandedLink] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState("");
+  const [qrLink, setQrLink] = useState<{ label: string; href: string } | null>(
+    null,
+  );
   const visibleLinks = selectedCategory
     ? links.filter((link) => link.categories.includes(selectedCategory))
     : links;
@@ -300,6 +303,8 @@ export default function Home() {
                       ? "translate-y-0 opacity-100"
                       : "-translate-y-2 opacity-0"
                   }`}
+                  inert={isExpanded ? undefined : true}
+                  aria-hidden={!isExpanded}
                 >
                   <div className="flex flex-col gap-3 p-3">
                   {link.canPreview ? (
@@ -330,14 +335,15 @@ export default function Home() {
                   )}
 
                   <div className="grid grid-cols-[1fr_1fr_44px] gap-2">
-                    <a
-                      href={getQrCodeUrl(link.href)}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setQrLink({ label: link.label, href: link.href })
+                      }
                       className="rounded-md border border-[#CDBFB4] bg-[#FDFBF7] px-3 py-2 text-sm font-semibold text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
                     >
                       QR Code
-                    </a>
+                    </button>
                     <a
                       href={link.href}
                       target="_blank"
@@ -387,6 +393,51 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      {qrLink && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#1D1B20]/45 px-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qr-code-title"
+          onClick={() => setQrLink(null)}
+        >
+          <div
+            className="w-full max-w-xs rounded-lg border border-[#D8CFC4] bg-[#FDFBF7] p-5 text-center shadow-xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <h2
+                id="qr-code-title"
+                className="text-base font-semibold text-[#4A443F]"
+              >
+                {qrLink.label} QR Code
+              </h2>
+              <button
+                type="button"
+                onClick={() => setQrLink(null)}
+                aria-label="Close QR code"
+                className="flex h-8 w-8 items-center justify-center rounded-md border border-[#CDBFB4] text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="mt-5 rounded-md border border-[#E8E2D9] bg-white p-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={getQrCodeUrl(qrLink.href)}
+                alt={`QR code for ${qrLink.label}`}
+                className="mx-auto h-56 w-56"
+              />
+            </div>
+
+            <p className="mt-3 break-all text-xs text-[#7D716B]">
+              {qrLink.href}
+            </p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
