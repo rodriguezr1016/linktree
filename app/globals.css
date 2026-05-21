@@ -35,3 +35,21 @@ body {
   height: 0;
   display: none;
 }
+
+@keyframes link-vibrate {
+  0% {
+    transform: rotate(-0.35deg) translateX(-1px);
+  }
+
+  50% {
+    transform: rotate(0.35deg) translateX(1px);
+  }
+
+  100% {
+    transform: rotate(-0.35deg) translateX(-1px);
+  }
+}
+
+.animate-link-vibrate {
+  animation: link-vibrate 120ms linear infinite;
+}

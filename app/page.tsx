@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type UIEvent } from "react";
+import { useRef, useState, useSyncExternalStore, type UIEvent } from "react";
 
 const links = [
   {
@@ -166,17 +166,84 @@ const getDisplayUrl = (href: string) => {
 const getQrCodeUrl = (href: string) =>
   `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(href)}`;
 
+const getQrCodeFileName = (label: string) =>
+  `${label.toLowerCase().replaceAll(" ", "-")}-qr-code.png`;
+
+const linkOrderStorageKey = "linktree-link-order";
+const linkOrderChangeEvent = "linktree-link-order-change";
+const defaultLinkOrderSnapshot = JSON.stringify(
+  links.map((link) => link.label),
+);
+
+const subscribeToLinkOrder = (onStoreChange: () => void) => {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  window.addEventListener("storage", onStoreChange);
+  window.addEventListener(linkOrderChangeEvent, onStoreChange);
+
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener(linkOrderChangeEvent, onStoreChange);
+  };
+};
+
+const getLinkOrderSnapshot = () => {
+  if (typeof window === "undefined") {
+    return defaultLinkOrderSnapshot;
+  }
+
+  return (
+    window.localStorage.getItem(linkOrderStorageKey) ?? defaultLinkOrderSnapshot
+  );
+};
+
+const getServerLinkOrderSnapshot = () => defaultLinkOrderSnapshot;
+
+const getOrderedLinksFromSnapshot = (snapshot: string) => {
+  try {
+    const savedLabels = JSON.parse(snapshot) as string[];
+    const savedLinks = savedLabels
+      .map((label) => links.find((link) => link.label === label))
+      .filter((link): link is (typeof links)[number] => Boolean(link));
+    const newLinks = links.filter((link) => !savedLabels.includes(link.label));
+
+    return [...savedLinks, ...newLinks];
+  } catch {
+    return links;
+  }
+};
+
+const saveLinkOrder = (nextLinks: typeof links) => {
+  window.localStorage.setItem(
+    linkOrderStorageKey,
+    JSON.stringify(nextLinks.map((link) => link.label)),
+  );
+  window.dispatchEvent(new Event(linkOrderChangeEvent));
+};
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categoryScrollProgress, setCategoryScrollProgress] = useState(0);
   const [expandedLink, setExpandedLink] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState("");
+  const [isReordering, setIsReordering] = useState(false);
+  const [draggingLink, setDraggingLink] = useState<string | null>(null);
   const [qrLink, setQrLink] = useState<{ label: string; href: string } | null>(
     null,
   );
+  const longPressTimerRef = useRef<number | null>(null);
+  const suppressNextClickRef = useRef(false);
+  const linkOrderSnapshot = useSyncExternalStore(
+    subscribeToLinkOrder,
+    getLinkOrderSnapshot,
+    getServerLinkOrderSnapshot,
+  );
+  const orderedLinks = getOrderedLinksFromSnapshot(linkOrderSnapshot);
   const visibleLinks = selectedCategory
-    ? links.filter((link) => link.categories.includes(selectedCategory))
-    : links;
+    ? orderedLinks.filter((link) => link.categories.includes(selectedCategory))
+    : orderedLinks;
   const handleCategoryScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollLeft, scrollWidth, clientWidth } = event.currentTarget;
     const maxScrollLeft = scrollWidth - clientWidth;
@@ -191,6 +258,94 @@ export default function Home() {
     window.setTimeout(() => {
       setCopiedLink((currentLink) => (currentLink === label ? "" : currentLink));
     }, 1500);
+  };
+  const handleDownloadQrCode = async (label: string, href: string) => {
+    const response = await fetch(getQrCodeUrl(href));
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = objectUrl;
+    downloadLink.download = getQrCodeFileName(label);
+    document.body.append(downloadLink);
+    downloadLink.click();
+    downloadLink.remove();
+    URL.revokeObjectURL(objectUrl);
+  };
+  const handleShareQrCode = async (label: string, href: string) => {
+    const qrCodeUrl = getQrCodeUrl(href);
+    const response = await fetch(qrCodeUrl);
+    const blob = await response.blob();
+    const file = new File([blob], getQrCodeFileName(label), {
+      type: blob.type || "image/png",
+    });
+
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({
+        title: `${label} QR Code`,
+        text: `QR code for ${label}`,
+        files: [file],
+      });
+      return;
+    }
+
+    if (navigator.share) {
+      await navigator.share({
+        title: `${label} QR Code`,
+        text: `Open ${label}`,
+        url: href,
+      });
+      return;
+    }
+
+    await navigator.clipboard.writeText(href);
+    setCopiedLink(label);
+  };
+  const startReorderPress = (label: string) => {
+    longPressTimerRef.current = window.setTimeout(() => {
+      suppressNextClickRef.current = true;
+      setExpandedLink(null);
+      setDraggingLink(label);
+      setIsReordering(true);
+    }, 450);
+  };
+  const clearReorderPress = () => {
+    if (longPressTimerRef.current) {
+      window.clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+  const stopReordering = () => {
+    clearReorderPress();
+    setDraggingLink(null);
+
+    window.setTimeout(() => {
+      setIsReordering(false);
+    }, 120);
+  };
+  const moveDraggedLink = (targetLabel: string) => {
+    if (!draggingLink || draggingLink === targetLabel) {
+      return;
+    }
+
+    const nextLinks = [...orderedLinks];
+    const currentIndex = nextLinks.findIndex(
+      (link) => link.label === draggingLink,
+    );
+    const targetIndex = nextLinks.findIndex(
+      (link) => link.label === targetLabel,
+    );
+
+    if (currentIndex === -1 || targetIndex === -1) {
+      return;
+    }
+
+    [nextLinks[currentIndex], nextLinks[targetIndex]] = [
+      nextLinks[targetIndex],
+      nextLinks[currentIndex],
+    ];
+
+    saveLinkOrder(nextLinks);
   };
 
   return (
@@ -261,23 +416,46 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex w-full flex-col gap-3 px-6 py-8">
+        <div
+          className="flex w-full flex-col gap-3 px-6 py-8"
+          onPointerUp={stopReordering}
+          onPointerCancel={stopReordering}
+        >
           {visibleLinks.map((link) => {
             const isExpanded = expandedLink === link.label;
+            const isDragging = draggingLink === link.label;
 
             return (
             <div
               key={link.label}
-              className="overflow-hidden rounded-md border border-[#CDBFB4] bg-[#F5EFE8]"
+              onPointerEnter={() => {
+                if (isReordering) {
+                  moveDraggedLink(link.label);
+                }
+              }}
+              className={`overflow-hidden rounded-md border border-[#CDBFB4] bg-[#F5EFE8] transition ${
+                isReordering ? "animate-link-vibrate" : ""
+              } ${isDragging ? "scale-[1.02] opacity-80" : ""}`}
             >
               <button
                 type="button"
-                onClick={() =>
+                onPointerDown={() => startReorderPress(link.label)}
+                onPointerUp={stopReordering}
+                onPointerCancel={stopReordering}
+                onPointerLeave={clearReorderPress}
+                onClick={() => {
+                  if (suppressNextClickRef.current || isReordering) {
+                    suppressNextClickRef.current = false;
+                    return;
+                  }
+
                   setExpandedLink((currentLink) =>
                     currentLink === link.label ? null : link.label,
-                  )
-                }
-                className="flex w-full items-center bg-[#A64E3F] px-4 py-4 text-sm font-semibold text-[#FDFBF7] transition hover:bg-[#8F4437]"
+                  );
+                }}
+                className={`flex w-full touch-none items-center bg-[#A64E3F] px-4 py-4 text-sm font-semibold text-[#FDFBF7] transition hover:bg-[#8F4437] ${
+                  isReordering ? "cursor-grabbing" : "cursor-grab"
+                }`}
               >
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#FDFBF7]/15 text-xs">
                   {link.icon}
@@ -435,6 +613,23 @@ export default function Home() {
             <p className="mt-3 break-all text-xs text-[#7D716B]">
               {qrLink.href}
             </p>
+
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => handleDownloadQrCode(qrLink.label, qrLink.href)}
+                className="rounded-md border border-[#CDBFB4] bg-[#A64E3F] px-3 py-2 text-sm font-semibold text-[#FDFBF7] transition hover:bg-[#8F4437]"
+              >
+                Download
+              </button>
+              <button
+                type="button"
+                onClick={() => handleShareQrCode(qrLink.label, qrLink.href)}
+                className="rounded-md border border-[#CDBFB4] bg-[#FDFBF7] px-3 py-2 text-sm font-semibold text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+              >
+                Share
+              </button>
+            </div>
           </div>
         </div>
       )}
