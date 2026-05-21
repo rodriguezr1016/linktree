@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rene Rodriguez Linktree
 
-## Getting Started
+A Linktree-style profile page. The baseline page includes a profile image, name, title, location, categorized personal links, expandable link cards, QR sharing, and a custom warm clay/cream visual style.
 
-First, run the development server:
+## Feature Pitch
+
+The feature I would pitch to Linktree is **reorderable profile links with persistent personalized ordering**.
+
+Creators often change what they want visitors to notice first: a new project, a job search, a social channel, a shop link, or a timely campaign. Linktree already helps collect links, but ordering is one of the most important ways a creator communicates priority. This demo lets users press and hold a link card, get vibration-style visual feedback, drag it into a new position, and keep that order saved locally.
+
+In a production Linktree version, this could become a creator-facing ordering tool backed by user profile settings. A later version could extend it into audience-aware ordering, scheduled ordering, analytics-informed recommendations, or per-category ordering.
+
+## What It Does
+
+- Shows a personal profile section with image, name, title, and location.
+- Displays real links for portfolio, GitHub, LinkedIn, resume, projects, social/media, and shop examples.
+- Filters links by category: Socials, Work, Dev, Media, and Shop.
+- Expands each link into a preview panel with Visit, Copy, and QR Code actions.
+- Opens QR codes in an in-page modal with Download and Share actions.
+- Lets users press and hold link cards to reorder them.
+- Saves reordered links in `localStorage` so the order persists after reload.
+
+## Tech Stack
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+
+## Running Locally
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Build for production:
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Run lint:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```txt
+app/
+  components/
+    CategoryCarousel.tsx
+    FeatureBadge.tsx
+    LinkCard.tsx
+    ProfileHeader.tsx
+    QrModal.tsx
+  data/
+    links.tsx
+  lib/
+    link-order.ts
+    qr.ts
+  page.tsx
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`app/page.tsx` handles page-level state and interaction wiring. Link data, QR helpers, localStorage order persistence, and UI sections are split into smaller files so the page is easier to read and maintain.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes And Tradeoffs
+
+Some external sites block iframe previews with security headers, so the demo only uses live previews for portfolio pages that can be embedded. Other links show a styled preview fallback with the domain and icon.
+
+The reorder feature uses `localStorage` for this assessment demo. At Linktree scale, this should live in a backend profile settings table keyed by creator/profile ID, with validation to ensure saved order only references links the creator owns.
