@@ -8,6 +8,7 @@ const links = [
     label: "Portfolio",
     href: "https://nextjs-portfolio-eta-opal.vercel.app/",
     categories: ["Work", "Dev"],
+    canPreview: true,
     icon: <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z"/></svg>,
   },
   {
@@ -39,6 +40,7 @@ const links = [
     label: "Resume",
     href: "https://nextjs-portfolio-eta-opal.vercel.app/Resume",
     categories: ["Work", "Dev"],
+    canPreview: true,
     icon: <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M280-280h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm-80 480q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>,
   },
   {
@@ -62,6 +64,7 @@ const links = [
     label: "Projects",
     href: "https://nextjs-portfolio-eta-opal.vercel.app/Works",
     categories: ["Dev", "Work"],
+    canPreview: true,
     icon: "{}",
   },
   {
@@ -154,9 +157,20 @@ const categories = [
   { label: "Shop", icon: "$" },
 ];
 
+const getDisplayUrl = (href: string) => {
+  const url = new URL(href);
+
+  return url.hostname.replace("www.", "");
+};
+
+const getQrCodeUrl = (href: string) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(href)}`;
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categoryScrollProgress, setCategoryScrollProgress] = useState(0);
+  const [expandedLink, setExpandedLink] = useState<string | null>(null);
+  const [copiedLink, setCopiedLink] = useState("");
   const visibleLinks = selectedCategory
     ? links.filter((link) => link.categories.includes(selectedCategory))
     : links;
@@ -167,6 +181,13 @@ export default function Home() {
     setCategoryScrollProgress(
       maxScrollLeft > 0 ? scrollLeft / maxScrollLeft : 0,
     );
+  };
+  const handleCopyLink = async (href: string, label: string) => {
+    await navigator.clipboard.writeText(href);
+    setCopiedLink(label);
+    window.setTimeout(() => {
+      setCopiedLink((currentLink) => (currentLink === label ? "" : currentLink));
+    }, 1500);
   };
 
   return (
@@ -238,21 +259,132 @@ export default function Home() {
         </div>
 
         <div className="flex w-full flex-col gap-3 px-6 py-8">
-          {visibleLinks.map((link) => (
-            <a
+          {visibleLinks.map((link) => {
+            const isExpanded = expandedLink === link.label;
+
+            return (
+            <div
               key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex w-full items-center rounded-md border border-[#CDBFB4] bg-[#A64E3F] px-4 py-4 text-sm font-semibold text-[#FDFBF7] transition hover:border-[#854033] hover:bg-[#8F4437]"
+              className="overflow-hidden rounded-md border border-[#CDBFB4] bg-[#F5EFE8]"
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#FDFBF7]/15 text-xs">
-                {link.icon}
-              </span>
-              <span className="flex-1 text-center">{link.label}</span>
-              <span className="h-8 w-8 shrink-0" aria-hidden="true" />
-            </a>
-          ))}
+              <button
+                type="button"
+                onClick={() =>
+                  setExpandedLink((currentLink) =>
+                    currentLink === link.label ? null : link.label,
+                  )
+                }
+                className="flex w-full items-center bg-[#A64E3F] px-4 py-4 text-sm font-semibold text-[#FDFBF7] transition hover:bg-[#8F4437]"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#FDFBF7]/15 text-xs">
+                  {link.icon}
+                </span>
+                <span className="flex-1 text-center">{link.label}</span>
+                <span
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center text-sm transition-transform duration-300 ${
+                    isExpanded ? "rotate-45" : "rotate-0"
+                  }`}
+                >
+                  +
+                </span>
+              </button>
+
+              <div
+                className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                  isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                }`}
+              >
+                <div
+                  className={`min-h-0 overflow-hidden transition duration-300 ease-out ${
+                    isExpanded
+                      ? "translate-y-0 opacity-100"
+                      : "-translate-y-2 opacity-0"
+                  }`}
+                >
+                  <div className="flex flex-col gap-3 p-3">
+                  {link.canPreview ? (
+                    <div className="aspect-video overflow-hidden rounded-md border border-[#D8CFC4] bg-[#E8E2D9]">
+                      <iframe
+                        src={link.href}
+                        title={`${link.label} preview`}
+                        className="h-full w-full"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        sandbox="allow-forms allow-popups allow-same-origin allow-scripts"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex aspect-video flex-col items-center justify-center gap-3 rounded-md border border-[#D8CFC4] bg-[#E8E2D9] px-5 text-center">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-md bg-[#A64E3F] text-[#FDFBF7]">
+                        {link.icon}
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-[#4A443F]">
+                          {link.label}
+                        </p>
+                        <p className="mt-1 text-xs text-[#7D716B]">
+                          {getDisplayUrl(link.href)}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-[1fr_1fr_44px] gap-2">
+                    <a
+                      href={getQrCodeUrl(link.href)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-md border border-[#CDBFB4] bg-[#FDFBF7] px-3 py-2 text-sm font-semibold text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+                    >
+                      QR Code
+                    </a>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-md border border-[#CDBFB4] bg-[#FDFBF7] px-3 py-2 text-sm font-semibold text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+                    >
+                      Visit
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyLink(link.href, link.label)}
+                      aria-label={`Copy ${link.label} link`}
+                      title={
+                        copiedLink === link.label ? "Copied" : "Copy link"
+                      }
+                      className="flex items-center justify-center rounded-md border border-[#CDBFB4] bg-[#FDFBF7] text-[#4A443F] transition hover:border-[#A64E3F] hover:text-[#A64E3F]"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M8 8V6.5A2.5 2.5 0 0 1 10.5 4h7A2.5 2.5 0 0 1 20 6.5v7A2.5 2.5 0 0 1 17.5 16H16"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M6.5 8h7A2.5 2.5 0 0 1 16 10.5v7a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 4 17.5v-7A2.5 2.5 0 0 1 6.5 8Z"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+            );
+          })}
         </div>
       </section>
     </main>
